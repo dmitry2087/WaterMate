@@ -7,21 +7,18 @@
 
 // SplashScreen.swift
 // WaterMate
-//
-// Экран-заставка с анимацией и звуком при запуске приложения
+
+// Экран-заставка с анимацией при запуске приложения
 
 import SwiftUI
-import AVFoundation
 
 struct SplashScreen: View {
     @AppStorage("userAge") private var age: Int = 0
     @AppStorage("userWeight") private var weight: Double = 0.0
-
     @State private var isActive = false // Управляет переходом к следующему экрану
     @State private var scale: CGFloat = 0.8 // Начальный масштаб для анимации
     @State private var opacity: Double = 0.5 // Начальная прозрачность для анимации
-    @State private var player: AVAudioPlayer? // Для проигрывания звука
-
+    
     var body: some View {
         Group {
             if isActive {
@@ -34,6 +31,7 @@ struct SplashScreen: View {
             } else {
                 VStack {
                     Spacer()
+                    
                     // Логотип приложения с анимацией
                     Text("💧 WaterMate")
                         .font(.system(size: 48, weight: .bold))
@@ -45,26 +43,19 @@ struct SplashScreen: View {
                                 self.scale = 1.0
                                 self.opacity = 1.0
                             }
-                            // Воспроизведение звука при запуске
-                            if let url = Bundle.main.url(forResource: "start-sound", withExtension: "mp3") {
-                                do {
-                                    self.player = try AVAudioPlayer(contentsOf: url)
-                                    self.player?.play()
-                                } catch {
-                                    print("Ошибка воспроизведения звука: \(error.localizedDescription)")
-                                }
-                            }
                         }
+                    
                     Spacer()
+                    
                     // Кнопка для перехода на следующий экран
                     Button("Продолжить") {
                         withAnimation {
                             isActive = true
                         }
                     }
-                    .padding()
-                    .transition(.opacity)
                 }
+                .padding()
+                .transition(.opacity)
             }
         }
     }
